@@ -28,22 +28,33 @@ const OrderShow = ({ order, currentUser }) => {
     }
   }, [order])
 
-  if (timeLeft < 0) {
-    return <div>Order Expired</div>
-  }
-
   return (
-    <div>
-      Time left to pay: {timeLeft} seconds
-      <StripeCheckout
-        token={({ id }) => doRequest({ token: id })}
-        stripeKey={
-          'pk_test_51IQUUBE7WbYRwDrHjvgY6S2tezMtwQKCPZEjJ5K5VYpcAoTdI4dsY34l4m4SB9GUg1eq8eeL9XZilGqiHYoGYTaU00qp8l77Wy'
-        }
-        amount={order.ticket.price * 100}
-        email={currentUser.email}
-      />
-      {errors}
+    <div
+      class="card-deck mb-3 text-center"
+      style={{
+        height: '80vh',
+        marginTop: '4rem',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      {timeLeft < 0 ? (
+        <h1 className="text-danger">ORDER EXPIRED</h1>
+      ) : (
+        <div>
+          <h5 className="text-info">Time left to pay: {timeLeft} seconds</h5>
+          <StripeCheckout
+            token={({ id }) => doRequest({ token: id })}
+            stripeKey={
+              'pk_test_51IQUUBE7WbYRwDrHjvgY6S2tezMtwQKCPZEjJ5K5VYpcAoTdI4dsY34l4m4SB9GUg1eq8eeL9XZilGqiHYoGYTaU00qp8l77Wy'
+            }
+            amount={order.ticket.price * 100}
+            email={currentUser.email}
+          />
+          {errors}
+        </div>
+      )}
     </div>
   )
 }
